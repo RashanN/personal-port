@@ -136,7 +136,156 @@
             animation: pulse 8s infinite alternate;
             z-index: -1;
         }
+	@media (max-width: 768px) {
+    /* Hero section adjustments */
+    .hero {
+        height: auto;
+        padding: 100px 1.5rem 2rem;
+    }
+    
+    .hero h1 {
+        font-size: 2.2rem;
+        line-height: 1.2;
+    }
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
+    .hero-image {
+        position: relative;
+        right: auto;
+        margin: 2rem auto;
+        width: 250px;
+        height: 250px;
+    }
+    
+    /* Navigation improvements */
+    .nav-links {
+        width: 80%;
+    }
+    
+    /* Project cards */
+    .projects-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .project-card {
+        height: auto;
+    }
+    
+    /* Education/Experience items */
+    .education-item, 
+    .experience-item {
+        padding: 1.5rem;
+    }
+    
+    .education-item h3,
+    .experience-item h3 {
+        font-size: 1.3rem;
+    }
+    
+    /* Contact form adjustments */
+    .contact-container {
+        flex-direction: column;
+    }
+    
+    .contact-form {
+        margin-top: 1.5rem;
+    }
+}
 
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 576px) {
+    /* Header adjustments */
+    header {
+        padding: 0.8rem 1rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    /* Hero section */
+    .hero h1 {
+        font-size: 1.8rem;
+    }
+    
+    .hero-btns {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    /* About section */
+    .about-content {
+        flex-direction: column;
+        gap: 2rem;
+    }
+    
+    .about-image {
+        margin: 0 auto;
+    }
+    
+    /* Section titles */
+    .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Footer links */
+    .footer-links {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    /* Education/Experience items */
+    .education-item h3,
+    .experience-item h3 {
+        font-size: 1.2rem;
+    }
+    
+    .education-item h4,
+    .experience-item h4 {
+        font-size: 1rem;
+    }
+}
+
+/* Extra small devices (portrait phones, less than 576px) */
+@media (max-width: 400px) {
+    /* Hero section */
+    .hero h1 {
+        font-size: 1.6rem;
+    }
+    
+    /* Project cards */
+    .project-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .project-tag {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    /* Contact details */
+    .contact-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .contact-detail i {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+}
         @keyframes pulse {
             0% {
                 transform: scale(1);
@@ -1551,5 +1700,108 @@
             });
         });
     </script>
+<script>
+// Update this JavaScript for better mobile handling
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+    const navLinksItems = document.querySelectorAll('.nav-links li a');
+    
+    hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('active');
+        
+        // Toggle body scroll when menu is open
+        if (navLinks.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close menu when a link is clicked
+    navLinksItems.forEach(item => {
+        item.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            navLinks.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+    });
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                // Close mobile menu if open
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+                
+                // Calculate scroll position accounting for fixed header
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetElement.offsetTop - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                
+                // Update active link
+                document.querySelectorAll('.nav-links a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            }
+        });
+    });
+    
+    // Handle scroll events for header and scroll-to-top button
+    const header = document.querySelector('header');
+    const scrollTopBtn = document.querySelector('.scroll-top');
+    
+    window.addEventListener('scroll', function() {
+        // Sticky header
+        if (window.pageYOffset > 50) {
+            header.classList.add('sticky');
+        } else {
+            header.classList.remove('sticky');
+        }
+        
+        // Scroll-to-top button
+        if (window.pageYOffset > 300) {
+            scrollTopBtn.classList.add('active');
+        } else {
+            scrollTopBtn.classList.remove('active');
+        }
+    });
+    
+    // Animation on scroll
+    const fadeElements = document.querySelectorAll('.fade-in');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, {
+        threshold: 0.1
+    });
+    
+    fadeElements.forEach(element => {
+        element.style.opacity = 0;
+        element.style.transform = 'translateY(20px)';
+        element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(element);
+    });
+});
+</script>
 </body>
 </html>
